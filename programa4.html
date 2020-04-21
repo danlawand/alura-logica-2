@@ -1,0 +1,156 @@
+<canvas width="600" height="400"></canvas>
+
+<script>
+    var tela  = document.querySelector('canvas');
+    var pincel = tela.getContext('2d');
+    pincel.fillStyle = 'white';
+    pincel.fillRect(0, 0, 600, 400);
+
+    var x = 20;
+    var y = 20;
+
+    // códigos do teclado
+
+    var esquerda = 37;
+    var cima = 38;
+    var direita = 39;
+    var baixo = 40;
+
+    // taxa de incremento
+    var taxa = 20;
+
+
+    function desenhaCirculo(x, y, raio, cor)
+    {
+        pincel.fillStyle = cor;
+        pincel.beginPath();
+        pincel.arc(x, y, raio, 0, 2 *Math.PI);
+        pincel.fill();
+    }
+
+    function limpaTela()
+    {
+        pincel.clearRect(0, 0, 600, 400);
+    }
+    var idaX = -1;
+    var idaY = 1;
+
+    function sentidoY (y)
+    {
+        if (y >= 380)
+        {
+            //inverte o sinal
+            idaY = -1;
+        }
+        else if (y <= 20)
+        {
+            idaY = 1;
+        }
+        //caso contrário mantém o sinal
+        return idaY;
+    }
+
+    function sentidoX (x)
+    {
+        if (x == 580 || x == 20)
+        {   
+            y = y + sentidoY(y) * 20;
+            idaX = idaX * (-1);
+        }
+        return idaX;
+    }
+
+    var limiteX = 0;
+    var limiteY = 0;
+    var raio = 20;
+    var incremento_raio = 1;
+    function atualizaTela()
+    {
+        limpaTela();
+        if (x <= limiteX && y <= limiteY)
+        {
+            desenhaCirculo(x, y, raio, 'blue');
+            desenhaCirculo(600, 400, raio, 'blue');
+            x = 600;
+            y = 400;
+        } else if (x <= limiteX && y >= 400)
+        {
+            desenhaCirculo(x, y, raio, 'blue');
+            desenhaCirculo(600, limiteY, raio, 'blue');   
+            x = 600;
+            y = limiteY;
+        } else if (x >= 600 && y <= limiteY)
+        {
+            desenhaCirculo(x, y, raio, 'blue');
+            desenhaCirculo(limiteX, 400, raio, 'blue');
+            x = limiteX;
+            y = 400;
+        }
+        else if (x >= 600 && y >= 400)
+        {
+            desenhaCirculo(x, y, raio, 'blue');
+            desenhaCirculo(limiteX, limiteY, raio, 'blue');
+            x = limiteX;
+            y = limiteY;
+        }
+        else if (x <= limiteX)
+        {
+            desenhaCirculo(x, y, raio, 'blue');
+            desenhaCirculo(600, y, raio, 'blue');
+            x = 600;
+        } else if (x >= 600)
+        {
+            desenhaCirculo(x, y, raio, 'blue');
+            desenhaCirculo(limiteX, y, raio, 'blue');
+            x = limiteX;
+        } else if (y <= limiteY)
+        {
+            desenhaCirculo(x, y, raio, 'blue');
+            desenhaCirculo(x, 400, raio, 'blue');
+            y = 400;
+        }
+        else if (y >= 400)
+        {
+            desenhaCirculo(x, y, raio, 'blue');
+            desenhaCirculo(x, limiteY, raio, 'blue');
+            y = limiteY;
+        }
+        else 
+        {
+            desenhaCirculo(x, y, raio, 'blue');
+        }
+
+        // x = x + sentidoX(x);
+        //desenhaCirculo(50, 50, raio, 'red');
+        /* if (raio == 20)
+        {
+            incremento_raio = 1;
+        }
+        else if (raio == 30)
+        {
+            incremento_raio = -1;
+        }
+        raio = raio + incremento_raio;*/
+        //alert(raio + ' raio');
+    }
+    setInterval(atualizaTela, 50);
+
+    function leDoTeclado(evento)
+    {
+        if (evento.keyCode == cima)
+        {
+            y = y - taxa;
+        }else if (evento.keyCode == baixo)
+        {
+            y = y + taxa;
+        } else if (evento.keyCode == esquerda)
+        {
+            x = x - taxa;
+        } else if (evento.keyCode == direita)
+        {
+            x = x + taxa;
+        }
+    }
+
+   document.onkeydown = leDoTeclado;
+</script>

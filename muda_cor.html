@@ -1,0 +1,78 @@
+<canvas width="600" height="400"></canvas>
+<br>
+Escolha uma cor <input type="color">
+<script>
+    var paleta = document.querySelector('input');
+    var tela = document.querySelector('canvas');
+    var pincel = tela.getContext('2d');
+    var cores = ['blue', 'red', 'green'];
+    var indiceCorAtual = 0;
+    pincel.fillStyle = 'grey';
+    pincel.fillRect(0, 0, 600, 400);
+    var raio = 10;
+    var desenha = false;
+
+    tela.onmousemove =  function (evento) {
+       
+        if (desenha)
+        {
+            var x = evento.pageX - tela.offsetLeft;
+            var y = evento.pageY - tela.offsetTop;       
+            pincel.fillStyle = paleta.value;
+            if (evento.shiftKey && evento.altKey)
+            {
+                alert('Pressione apenas uma tecla');
+            }
+            else if (evento.shiftKey || evento.altKey)
+            {
+                if (evento.shiftKey && raio <= 35)
+                {
+                    if(raio == 35)
+                    {
+                        raio = raio + 5;
+                    }
+                    else
+                    {
+                        raio = raio + 10;
+                    }
+                }
+                else 
+                {
+                    if(evento.altKey && raio - 5 >= 10) 
+                    {
+                        raio = raio - 5;
+                    }
+                }
+            }
+            pincel.beginPath();
+            pincel.arc(x, y, raio, 0, 2 * 3.14);
+            pincel.fill();
+        }
+    }
+
+    tela.onmousedown = function ()
+    {
+        desenha = true;
+    }
+
+    tela.onmouseup = function (){
+        desenha = false;
+    }
+
+    function mudaCor() {
+        if (indiceCorAtual < cores.length)
+        {
+            indiceCorAtual++;
+        } else {
+            indiceCorAtual = 0;
+        }
+        return false;
+    }
+
+    tela.oncontextmenu = mudaCor;
+    
+
+
+    
+</script>
+
